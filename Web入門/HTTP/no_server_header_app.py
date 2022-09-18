@@ -8,7 +8,8 @@ class localFlask(Flask):
         response.headers['server'] = 'SERVER' 
         return(response)
 
-app = Flask(__name__)
+app = localFlask(__name__)
+#app = Flask(__name__)
 @app.route("/")
 def sample_by_root():
     return render_template('sample.html')
