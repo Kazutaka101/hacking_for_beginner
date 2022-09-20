@@ -18,13 +18,12 @@ def login():
     login_message = ""
     if request.method == "POST":
         app.logger.info(request.get_data())
-        uname = request.form["uname"]
-        passw = request.form["passw"]
+        form_email = request.form["email"]
+        form_passwd= request.form["passw"]
         
-        login = user.query.filter_by(username=uname, password=passw).first()
+        login = user.query.filter_by(email=form_email, password=form_passwd).first()
         if login is not None:
             return "<h1>login success</h1>"
-            #return redirect(url_for("index"))
         else:
             login_message = "Invalid username or password"
     return render_template("login.html",message = login_message); 
@@ -45,4 +44,4 @@ def register():
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(host="0.0.0.0", port=5555,debug=True)
+    app.run(host='127.0.0.1', port=8080,debug=True)
