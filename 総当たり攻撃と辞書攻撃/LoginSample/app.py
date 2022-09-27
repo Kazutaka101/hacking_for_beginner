@@ -1,7 +1,9 @@
 from flask import Flask,render_template,flash, redirect,url_for,session,logging,request
 from flask_sqlalchemy import SQLAlchemy
-import sys
+import os 
+
 app = Flask(__name__)
+os.environ['WERKZEUG_DEBUG_PIN'] = 'off'
 app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///Test.db'
 db = SQLAlchemy(app)
 class user(db.Model):

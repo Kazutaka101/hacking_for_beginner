@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang='jp'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Login to my thread</title>
+  </head>
+  <body>
+    <h1>ようこそ、私達の掲示板へ</h1>
+    <p>名前を入力して会話を始めましょう</p>
+    <form method='POST' action='/login'>
+      <input type='text' name='uname'>
+      <br>
+      <button type='submit'>参加する</button>
+    </form>
+    <p>{{msg}}</p>
+
+  </body>
+</html>
+

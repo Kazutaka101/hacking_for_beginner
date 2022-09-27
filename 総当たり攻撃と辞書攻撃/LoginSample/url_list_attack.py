@@ -22,7 +22,7 @@ def dir_attack():
         except:
             continue
         #③  レスポンスステータスコードが、200(OK)ならurlを出力
-        #だめなら、飛ばす
+        #404なら飛ばす。それ以外なら出力する 
         if response.status_code == 200:
             print(f'{response.status_code}:{url}')
         elif response.status_code == 404:
